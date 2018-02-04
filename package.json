@@ -1,0 +1,23 @@
+{
+  "name": "techstream-mail-ru-frontend",
+  "version": "1.0.0",
+  "description": "https://www.youtube.com/playlist?list=PLrCZzMib1e9r9OwZDTtkgdIOy84SwICKu",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev2": "NODE_ENV=development cd 2/server && nodemon  server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naelrouz/techstream-mail-ru-frontend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naelrouz/techstream-mail-ru-frontend/issues"
+  },
+  "homepage": "https://github.com/naelrouz/techstream-mail-ru-frontend#readme",
+  "dependencies": {
+    "nodemon": "^1.14.12"
+  }
+}
