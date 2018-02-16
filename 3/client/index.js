@@ -1,143 +1,149 @@
-const auth = (username, email, cb) => {
-  const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/auth', true);
-  xhr.withCredentials = true;
+const {UserService, Block, Form, Scoreboard} = window;
 
-  const user = { username, email };
-  const body = JSON.stringify(user);
+const userService = new UserService();
 
-  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf8');
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState !== 4) {
-      return null;
-    }
-    if (xhr.status !== 200) {
-      return cb(xhr, null);
-    }
-
-    const res = JSON.parse(xhr.responseText);
-
-    cb(null, res);
-
-    return true;
-  };
-  xhr.send(body);
-};
-
-const whoami = cb => {
-  const xhr = new XMLHttpRequest();
-  xhr.open('GET', '/me', true);
-  xhr.withCredentials = true;
-
-  xhr.setRequestHeader('Content-Type', 'application/json; charset=utf8');
-  xhr.onreadystatechange = () => {
-    if (xhr.readyState !== 4) {
-      return null;
-    }
-    if (xhr.status !== 200) {
-      return cb(xhr, null);
-    }
-
-    const res = JSON.parse(xhr.responseText);
-
-    cb(null, res);
-
-    return true;
-  };
-  xhr.send();
-};
-
-const manuItems = [
-  { sectionId: 'login', name: 'Вход' },
-  { sectionId: 'profile', name: 'Профайл' },
-  { sectionId: 'about', name: 'Об игре' }
+const menuItems = [
+  {sectionId: 'login', name: 'Вход'},
+  {sectionId: 'profile', name: 'Профайл'},
+  {sectionId: 'about', name: 'Об игре'},
 ];
 
-const app = document.querySelector('#app');
-const nav = document.getElementById('navigation');
+const app = new Block(document.querySelector('#app'));
+const nav = new Block(document.getElementById('navigation'));
 
-manuItems.forEach(menuItem => {
-  const button = document.createElement('input');
-  button.classList.add('nav__item');
-  button.setAttribute('type', 'button');
-  button.setAttribute('data-section', menuItem.sectionId);
-  button.value = menuItem.name;
-  nav.appendChild(button);
+const signupForm = new Form([
+  {
+    classes: [],
+    attributes: {
+      name: 'username',
+      type: 'text',
+      placeholder: 'Имя',
+      required: 'required',
+    },
+  },
+  {
+    classes: [],
+    attributes: {
+      name: 'email',
+      type: 'email',
+      placeholder: 'E-mail',
+      required: 'required',
+    },
+  },
+  {
+    classes: [],
+    attributes: {
+      name: 'age',
+      type: 'text',
+      placeholder: 'Возраст',
+      required: 'required',
+    },
+  },
+  {
+    classes: [],
+    attributes: {type: 'submit', value: 'Регистрация'},
+  },
+]);
+
+app.append(signupForm);
+
+signupForm.onSubmit(data => {
+  console.log('signupForm.onSubmit.data: ', data);
 });
 
-// const navItems = document.querySelectorAll('.nav__item');
+const scoresTable = new Scoreboard();
 
-const sectionsHTMLC = app.getElementsByTagName('section');
+scoresTable.update([
+  {username: 'User1', email: 'E-mail', score: 303},
+  {username: 'User2', email: 'E-mail', score: 302},
+  {username: 'User3', email: 'E-mail', score: 530},
+  {username: 'User4', email: 'E-mail', score: 303, me: true},
+  {username: 'User5', email: 'E-mail', score: 730},
+  {username: 'User6', email: 'E-mail', score: 300},
+]);
 
-const usernameElement = document.querySelector('.profile__username');
-const emailElement = document.querySelector('.profile__email');
+app.append(scoresTable);
 
-usernameElement.textContent = 'Guest';
-
-console.log('usernameElement: ', usernameElement);
-
-nav.addEventListener('click', event => {
-  // e.preventDefault();
-
-  const { target } = event;
-
-  Array.from(sectionsHTMLC).forEach(sectionsItem => {
-    const section = sectionsItem;
-    section.hidden = true;
-    return null;
-  });
-
-  target.style.color = 'red';
-  const sectionId = target.getAttribute('data-section');
-
-  if (sectionId === 'profile') {
-    whoami((err, res) => {
-      if (err) {
-        console.log('err: ', err);
-        return null;
-      }
-      console.log('res: ', res);
-
-      const { username, email } = res;
-
-      usernameElement.textContent = username;
-      emailElement.textContent = email;
-
-      return null;
-    });
-  }
-
-  const section = document.getElementById(sectionId);
-
-  section.hidden = false;
-
-  // console.log(e);
-});
-
-// sections.reduce(section => {});
-
-const loginForm = document.querySelector('.login_form');
-
-loginForm.addEventListener('submit', event => {
-  event.preventDefault();
-  const form = event.target;
-
-  const email = form.elements.email.value;
-
-  const username = form.elements.username.value;
-
-  auth(username, email, (err, res) => {
-    if (err) {
-      // alert(`AUTH Error: ${err.status}`);
-      console.log('err: ', err);
-
-      return false;
-    }
-
-    form.reset();
-
-    console.log('res: ', res);
-
-    return true;
-  });
-});
+// menuItems.forEach(menuItem => {
+//   const button = Block.Create('input', ['nav__item'], {
+//     type: 'button',
+//     'data-section': menuItem.sectionId,
+//     value: menuItem.name,
+//   });
+//
+//   nav.append(button);
+// });
+//
+// // const navItems = document.querySelectorAll('.nav__item');
+//
+// const sectionsHTMLC = app.getElementsByTagName('section');
+//
+// const usernameElement = new Block(document.querySelector('.profile__username'));
+// const emailElement = new Block(document.querySelector('.profile__email'));
+//
+// usernameElement.textContent = 'Guest';
+//
+// console.log('usernameElement: ', usernameElement);
+//
+// nav.on('click', event => {
+//   // e.preventDefault();
+//
+//   const {target} = event;
+//
+//   Array.from(sectionsHTMLC).forEach(sectionsItem => {
+//     const section = sectionsItem;
+//     section.hidden = true;
+//     return null;
+//   });
+//
+//   target.style.color = 'red';
+//   const sectionId = target.getAttribute('data-section');
+//
+//   if (sectionId === 'profile') {
+//     userService.userData((err, userdata) => {
+//
+//       // console.log('userdata: ', userdata);
+//
+//       usernameElement.setText(userdata.username)
+//       emailElement.setText(userdata.email)
+//
+//     }, true);
+//   }
+//
+//   const section = document.getElementById(sectionId);
+//
+//   section.hidden = false;
+//
+//   // console.log(e);
+// });
+//
+// // sections.reduce(section => {});
+//
+// const loginForm = document.querySelector('.login_form');
+//
+// loginForm.addEventListener('submit', event => {
+//   console.log('login_form -> login_form');
+//
+//   event.preventDefault();
+//   const form = event.target;
+//
+//   const user = {};
+//
+//   user.email = form.elements.email.value;
+//   user.username = form.elements.username.value;
+//
+//
+//   userService.auth(user, (err, res) => {
+//     if (err) {
+//       console.error('err: ', err);
+//
+//       return false;
+//     }
+//
+//     form.reset();
+//
+//     console.log('res: ', res);
+//
+//     return true;
+//   });
+// });

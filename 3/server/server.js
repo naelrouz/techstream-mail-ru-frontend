@@ -23,7 +23,7 @@ const users = {};
 const ids = {};
 
 router.post('/auth', async ctx => {
-  const { username, email } = ctx.request.body;
+  const {username, email} = ctx.request.body;
 
   console.log(username);
 
@@ -50,7 +50,7 @@ router.post('/auth', async ctx => {
   console.log('users: ', users);
   console.log('ids: ', ids);
 
-  ctx.body = { id };
+  ctx.body = {id};
 });
 
 router.get('/me', async ctx => {

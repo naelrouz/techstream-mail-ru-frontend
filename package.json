@@ -1,11 +1,13 @@
 {
   "name": "techstream-mail-ru-frontend",
   "version": "1.0.0",
-  "description": "https://www.youtube.com/playlist?list=PLrCZzMib1e9r9OwZDTtkgdIOy84SwICKu",
+  "description":
+    "https://www.youtube.com/playlist?list=PLrCZzMib1e9r9OwZDTtkgdIOy84SwICKu",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev2": "NODE_ENV=development cd 2.2/server && nodemon  index.js"
+    "dev2": "NODE_ENV=development cd 2.2/server && nodemon  index.js",
+    "dev3": "NODE_ENV=development cd 3/server && nodemon  index.js"
   },
   "repository": {
     "type": "git",
